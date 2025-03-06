@@ -75,9 +75,13 @@ def update():
         discrete_predicate = ' AND '.join([f'1=0' for column in       
                                            discrete_columns])
 
+
+    # 
+
     # Combine where clause from sliders and checkboxes
     predicate = ' AND '.join([continuous_predicate, discrete_predicate]) 
     scatter_query = f'SELECT X, Y FROM forestfires.csv WHERE {predicate}'
+    # scatter_query = f'SELECT {x}, {y}, FROM placementdata.csv WHERE {predicate}'
     scatter_results = duckdb.sql(scatter_query).df()
     # print(str(scatter_results.head()))
     

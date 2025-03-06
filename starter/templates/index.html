@@ -35,8 +35,8 @@
 </div>
   <div class = "container">
     <div style="float: left">
-      <div><h1>Forest Fires</h1><div id="scatter"></div></div>
-      <div><h1>Number of Forest Fires by Month</h1><div id="bar"></div></div>
+      <div><h1>Scatter 1</h1><div id="scatter1"></div></div>
+      <div><h1>Scatter 2</h1><div id="scatter2"></div></div>
     </div>
       <h3>Internships</h3><div id="internships-slider" style="width:400pt; display: inline-block"></div>
       <h3>Projects</h3><div id="projects-slider" style="width:400pt; display: inline-block"></div>
@@ -63,11 +63,11 @@
   width = 460 - margin.left - margin.right,
   height = 360 - margin.top - margin.bottom;
 
-  scatter_svg = draw_svg('scatter', margin, width, height)
-  scatter_scale = draw_axes('scatter', scatter_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
+  scatter_svg = draw_svg('scatter1', margin, width, height)
+  scatter_scale = draw_axes('scatter1', scatter_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
 
-  scatter_svg = draw_svg('scatter', margin, width, height)
-  scatter_scale = draw_axes('scatter', scatter_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
+  scatter_svg = draw_svg('scatter2', margin, width, height)
+  scatter_scale = draw_axes('scatter2', scatter_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
 
   {% for column, (min,max) in filter_ranges.items() %}
     draw_slider('{{column}}', {{min}}, {{max}}, scatter_svg, bar_svg, scatter_scale, bar_scale)
