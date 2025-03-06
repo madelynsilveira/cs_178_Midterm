@@ -8,24 +8,53 @@
     <script src="static/js/script.js"></script>
 </header>
 <body>
+  <div id="interactions-container">
+    <div id="dropdown-container">
+        <label for="grouper"> X: </label>
+        <!-- TODO: update the bar chart when the grouper is changed -->
+        <select name="grouper" onchange="update_aggregate(this.value, 'grouper')">
+            {% for group in groups %}
+                <option value="{{group}}">{{ group }}</option>
+            {% endfor %}
+        </select>
+        <label for="value"> Y: </label>
+        <!-- TODO: update the bar chart when the value is changed -->
+        <select name="value" onchange="update_aggregate(this.value, 'value')">
+            {% for value in values %}
+                <option value="{{value}}">{{ value }}</option>
+            {% endfor %}
+        </select>
+        <label for="agg"> Facet: </label>
+        <!-- TODO: update the bar chart when the aggregate function is changed -->
+        <select name="agg" onchange="update_aggregate(this.value, 'agg')">
+            {% for agg in aggs %}
+                <option value="{{agg}}">{{ agg }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
   <div class = "container">
     <div style="float: left">
       <div><h1>Forest Fires</h1><div id="scatter"></div></div>
       <div><h1>Number of Forest Fires by Month</h1><div id="bar"></div></div>
     </div>
-
-    <div style="float: left; margin-left: 50px;">
-      <div id="days" style="margin-top:10px">
-        <h3>Day</h3>
-        {% for day in days%}
-          <input type="checkbox" class="checkboxDays day-selected" value="{{day}}" onchange="update_checked(this)" checked ><label>{{day}}</label>
-        {% endfor %}
-      </div>
-
-      <h3>Humidity</h3><div id="humidity-slider" style="width:400pt; display: inline-block"></div>
-      <h3>Temperature</h3><div id="temp-slider" style="width:400pt; display: inline-block"></div>
-      <h3>Wind</h3><div id="wind-slider" style="width:400pt; display: inline-block"></div>
+      <h3>Internships</h3><div id="internships-slider" style="width:400pt; display: inline-block"></div>
+      <h3>Projects</h3><div id="projects-slider" style="width:400pt; display: inline-block"></div>
+      <h3>AptitudeTestScore</h3><div id="aptitudetestscore-slider" style="width:400pt; display: inline-block"></div>
+      <h3>SoftSkillsRating</h3><div id="softskillsrating-slider" style="width:400pt; display: inline-block"></div>
+      <h3>SSC_Marks</h3><div id="ssc_marks-slider" style="width:400pt; display: inline-block"></div>
+      <h3>HSC_Marks</h3><div id="hsc_marks-slider" style="width:400pt; display: inline-block"></div>
     </div>
+      <div id="extracurricularactivities" style="margin-top:10px">
+        <h3>ExtracurricularActivities</h3>
+          <input type="radio" class="extracurricular activities-selected" value="true" onchange="update_checked(this)" checked ><label>True</label>
+          <input type="radio" class="extracurricular activities-selected" value="false" onchange="update_checked(this)" checked ><label>False</label>
+      </div>
+      <div id="placementtraining" style="margin-top:10px">
+        <h3>PlacementTraining</h3>
+          <input type="radio" class="placementtraining-selected" value="true" onchange="update_checked(this)" checked ><label>True</label>
+          <input type="radio" class="placementtraining-selected" value="false" onchange="update_checked(this)" checked ><label>False</label>
+      </div>
   </div>
 </body>
 
@@ -37,8 +66,8 @@
   scatter_svg = draw_svg('scatter', margin, width, height)
   scatter_scale = draw_axes('scatter', scatter_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
 
-  bar_svg = draw_svg('bar', margin, width, height)
-  bar_scale = draw_axes('bar', bar_svg, width, height, {{months|safe}}, [0, {{max_count}}], true)
+  scatter_svg = draw_svg('scatter', margin, width, height)
+  scatter_scale = draw_axes('scatter', scatter_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
 
   {% for column, (min,max) in filter_ranges.items() %}
     draw_slider('{{column}}', {{min}}, {{max}}, scatter_svg, bar_svg, scatter_scale, bar_scale)
