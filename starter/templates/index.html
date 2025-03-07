@@ -1,6 +1,6 @@
 <html>
 <header>
-    <title>ForestFires</title>
+    <title>Placement Data Visual Analytics System</title>
     <link href="static/css/nouislider.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="static/css/style.css" media="screen" />
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -11,50 +11,49 @@
   <div id="interactions-container">
     <div id="dropdown-container">
         <label for="grouper"> X: </label>
-        <!-- TODO: update the bar chart when the grouper is changed -->
         <select name="grouper" onchange="update_aggregate(this.value, 'grouper')">
             {% for group in groups %}
                 <option value="{{group}}">{{ group }}</option>
             {% endfor %}
         </select>
         <label for="value"> Y: </label>
-        <!-- TODO: update the bar chart when the value is changed -->
         <select name="value" onchange="update_aggregate(this.value, 'value')">
             {% for value in values %}
                 <option value="{{value}}">{{ value }}</option>
             {% endfor %}
         </select>
-        <label for="agg"> Facet: </label>
-        <!-- TODO: update the bar chart when the aggregate function is changed -->
-        <select name="agg" onchange="update_aggregate(this.value, 'agg')">
+        <label for="facet"> Facet: </label>
+        <select name="facet" onchange="update_aggregate(this.value, 'facet')">
             {% for agg in aggs %}
-                <option value="{{agg}}">{{ agg }}</option>
+                <option value="{{facet}}">{{ facet }}</option>
             {% endfor %}
         </select>
     </div>
 </div>
   <div class = "container">
-    <div style="float: left">
+    <div style="float: left; display: flex; justify-content: space-between; width: 100%;">
       <div><h1>Scatter 1</h1><div id="scatter1"></div></div>
       <div><h1>Scatter 2</h1><div id="scatter2"></div></div>
-    </div>
+      <div>
       <h3>Internships</h3><div id="internships-slider" style="width:400pt; display: inline-block"></div>
-      <h3>Projects</h3><div id="projects-slider" style="width:400pt; display: inline-block"></div>
-      <h3>AptitudeTestScore</h3><div id="aptitudetestscore-slider" style="width:400pt; display: inline-block"></div>
-      <h3>SoftSkillsRating</h3><div id="softskillsrating-slider" style="width:400pt; display: inline-block"></div>
-      <h3>SSC_Marks</h3><div id="ssc_marks-slider" style="width:400pt; display: inline-block"></div>
-      <h3>HSC_Marks</h3><div id="hsc_marks-slider" style="width:400pt; display: inline-block"></div>
+        <h3>Projects</h3><div id="projects-slider" style="width:400pt; display: inline-block"></div>
+        <h3>AptitudeTestScore</h3><div id="aptitudetestscore-slider" style="width:400pt; display: inline-block"></div>
+        <h3>SoftSkillsRating</h3><div id="softskillsrating-slider" style="width:400pt; display: inline-block"></div>
+        <h3>SSC_Marks</h3><div id="ssc_marks-slider" style="width:400pt; display: inline-block"></div>
+        <h3>HSC_Marks</h3><div id="hsc_marks-slider" style="width:400pt; display: inline-block"></div>
+        <div id="extracurricularactivities" style="margin-top:10px">
+          <h3>ExtracurricularActivities</h3>
+            <input type="radio" class="extracurricular activities-selected" value="true" onchange="update_checked(this)" checked ><label>True</label>
+            <input type="radio" class="extracurricular activities-selected" value="false" onchange="update_checked(this)" checked ><label>False</label>
+        </div>
+        <div id="placementtraining" style="margin-top:10px">
+          <h3>PlacementTraining</h3>
+            <input type="radio" class="placementtraining-selected" value="true" onchange="update_checked(this)" checked ><label>True</label>
+            <input type="radio" class="placementtraining-selected" value="false" onchange="update_checked(this)" checked ><label>False</label>
+        </div>
+      </div>
     </div>
-      <div id="extracurricularactivities" style="margin-top:10px">
-        <h3>ExtracurricularActivities</h3>
-          <input type="radio" class="extracurricular activities-selected" value="true" onchange="update_checked(this)" checked ><label>True</label>
-          <input type="radio" class="extracurricular activities-selected" value="false" onchange="update_checked(this)" checked ><label>False</label>
-      </div>
-      <div id="placementtraining" style="margin-top:10px">
-        <h3>PlacementTraining</h3>
-          <input type="radio" class="placementtraining-selected" value="true" onchange="update_checked(this)" checked ><label>True</label>
-          <input type="radio" class="placementtraining-selected" value="false" onchange="update_checked(this)" checked ><label>False</label>
-      </div>
+    </div>
   </div>
 </body>
 
