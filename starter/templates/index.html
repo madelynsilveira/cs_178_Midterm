@@ -10,22 +10,22 @@
 <body>
   <div id="interactions-container">
     <div id="dropdown-container">
-        <label for="grouper"> X: </label>
-        <select name="grouper" onchange="update_aggregate(this.value, 'grouper')">
-            {% for group in groups %}
-                <option value="{{group}}">{{ group }}</option>
+        <label for="X"> X: </label>
+        <select name="X" id ="X" onchange="update_aggregate(this.value, 'grouper')">
+            {% for option in x_options %}
+                <option value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
-        <label for="value"> Y: </label>
-        <select name="value" onchange="update_aggregate(this.value, 'value')">
-            {% for value in values %}
-                <option value="{{value}}">{{ value }}</option>
+        <label for="Y"> Y: </label>
+        <select name="Y" id ="Y" onchange="update_aggregate(this.value, 'value')">
+            {% for option in y_options %}
+                <option value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
-        <label for="facet"> Facet: </label>
-        <select name="facet" onchange="update_aggregate(this.value, 'facet')">
-            {% for agg in aggs %}
-                <option value="{{facet}}">{{ facet }}</option>
+        <label for="Facet"> Facet: </label>
+        <select name="Facet" id ="Facet" onchange="update_aggregate(this.value, 'facet')">
+            {% for option in facet_options %}
+                <option value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
     </div>
@@ -62,20 +62,21 @@
   width = 460 - margin.left - margin.right,
   height = 360 - margin.top - margin.bottom;
 
-  scatter_svg = draw_svg('scatter1', margin, width, height)
-  scatter_scale = draw_axes('scatter1', scatter_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
+  scatter1_svg = draw_svg('scatter1', margin, width, height)
+  scatter_scale = draw_axes('scatter1', scatter1_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
 
-  scatter_svg = draw_svg('scatter2', margin, width, height)
-  scatter_scale = draw_axes('scatter2', scatter_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
+  scatter2_svg = draw_svg('scatter2', margin, width, height)
+  scatter_scale = draw_axes('scatter2', scatter2_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
 
   {% for column, (min,max) in filter_ranges.items() %}
-    draw_slider('{{column}}', {{min}}, {{max}}, scatter_svg, bar_svg, scatter_scale, bar_scale)
+    draw_slider('{{column}}', {{min}}, {{max}}, scatter1_svg, scatter2_svg, scatter_scale)
   {% endfor %}
 
-  update(scatter_svg, bar_svg, scatter_scale, bar_scale)
+  update(scatter1_svg, scatter2_svg, scatter_scale)
+  
   function update_checked(checkbox){
     checkbox.classList.toggle('day-selected')
-    update(scatter_svg, bar_svg, scatter_scale, bar_scale)
+    update(scatter1_svg, scatter2_svg, scatter_scale)
   }
 
 </script>

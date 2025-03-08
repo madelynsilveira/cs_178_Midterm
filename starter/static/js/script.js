@@ -47,7 +47,7 @@ function draw_axes(plot_name, svg, width, height, domainx, domainy, x_discrete){
     return {'x': x_scale, 'y': y_scale}
 }
 
-function draw_slider(column, min, max, scatter_svg, bar_svg, scatter_scale, bar_scale){
+function draw_slider(column, min, max, scatter1_svg, scatter2_svg, scatter_scale){
     slider = document.getElementById(column+'-slider')
     noUiSlider.create(slider, {
       start: [min, max],
@@ -57,7 +57,7 @@ function draw_slider(column, min, max, scatter_svg, bar_svg, scatter_scale, bar_
       range: {'min': min, 'max': max}
     });
     slider.noUiSlider.on('change', function(){
-        update(scatter_svg, bar_svg, scatter_scale, bar_scale)
+        update(scatter1_svg, scatter2_svg, scatter_scale)
     });
 }
 
@@ -92,47 +92,36 @@ function draw_bar(data, svg, scale){
 
 // TODO: Write a function that extracts the selected days and minimum/maximum values for each slider
 function get_params(){
-    var day = []
-    document.querySelectorAll("input[type='checkbox']:checked").forEach((checkbox) => {
-        day.push(checkbox.value);
-    });
+    var activities = document.getElementById('extracurricularactivites').value;
+    var training = document.getElementById('placementtraining').value;
 
-    // Debugging line, remove before submitting
-    console.log('Selected days:', day); 
+    var x = document.getElementById('X').value;
+    var y = document.getElementById('Y').value;
+    var facet = document.getElementById('Facet').value;
+    
+    var internships = document.getElementById("internships-slider").noUiSlider.get()
+    var projects = document.getElementById("projects-slider").noUiSlider.get()
+    var aptitude = document.getElementById("aptitudetestscore-slider").noUiSlider.get()
+    var softskills = document.getElementById("softskillsrating-slider").noUiSlider.get()
+    var ssc_marks = document.getElementById("ssc_marks-slider").noUiSlider.get()
+    var hsc_marks= document.getElementById("hsc_marks-slider").noUiSlider.get()
 
-    var humidity = document.getElementById("humidity-slider").noUiSlider.get()
-    var temp = document.getElementById("temp-slider").noUiSlider.get()
-    var wind = document.getElementById("wind-slider").noUiSlider.get()
-
-    return {'day': day, 'humidity': humidity, 'temp': temp, 'wind': wind}
+    return {'Internships': internships, 'Projects': projects, 'AptitudeTestScore': aptitude,
+      'SoftSkillsRating': softskills, 'SSC_Marks': ssc_marks, 'HSC_Marks': hsc_marks, 
+      'ExtracurricularActivities': activities, 'PlacementTraining': training,
+      'X': x, 'Y': y, 'Facet': facet}
 }
 
 // TODO: Write a function that removes the old data points and redraws the scatterplot
-function update_scatter(data, svg, scale){
+function update_scatter(data1, data2, svg1, svg2, scale){
     // Remove existing points before drawing new ones
     svg.selectAll(".scatter-point").remove();
 
-    draw_scatter(data, svg, scale)
+    draw_scatter(data1, svg1, scale)
+    draw_scatter(data2, svg2, scale)
 }
 
-// TODO: Write a function that updates the y-axis, removes the old bars, and redraws the bars
-function update_bar(data, max_count, svg, scale){
-    // Set the new y-axis domain
-    scale.y.domain([0, max_count]); 
-
-    // Remove the old y-axis
-    svg.selectAll(".bar-yaxis").remove();
-
-    // Redraw the y-axis with the new scale
-    draw_yaxis("bar", svg, scale.y);
-
-    // Remove old bars before drawing new ones
-    svg.selectAll(".bar").remove();
-
-    draw_bar(data, svg, scale); 
-}
-
-function update(scatter_svg, bar_svg, scatter_scale, bar_scale){
+function update(scatter1_svg, scatter2_svg, scatter_scale){
     params = get_params()
     fetch('/update', {
         method: 'POST',
@@ -144,7 +133,30 @@ function update(scatter_svg, bar_svg, scatter_scale, bar_scale){
         })
     }).then(async function(response){
         var results = JSON.parse(JSON.stringify((await response.json())))
-        update_scatter(results['scatter_data'], scatter_svg, scatter_scale)
-        update_bar(results['bar_data'], results['max_count'], bar_svg, bar_scale)
+        update_scatter(results['scatter1_data'], results['scatter2_data'], scatter1_svg, scatter2_svg, scatter_scale)
+        // update_bar(results['bar_data'], results['max_count'], bar_svg, bar_scale)
     })
+}
+
+function update_aggregate(value, key){  
+    params = get_params()  
+//   fetch('/update_aggregate', {
+//       method: 'POST',
+//       credentials: 'include',
+//       body: JSON.stringify({value: value, key: key}),
+//       cache: 'no-cache',
+//       headers: new Headers({
+//           'content-type': 'application/json'
+//       })
+//   }).then(async function(response){
+//       var results = JSON.parse(JSON.stringify((await response.json())))
+    
+//       // Extract data
+//       data = JSON.parse(results.data)
+//       let x = results.x_column
+//       let y = results.y_column
+
+//       // Redraw bar graph 
+//       draw_bar(data, x, y)
+//   })
 }
