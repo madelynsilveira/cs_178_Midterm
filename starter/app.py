@@ -17,8 +17,8 @@ selected = {
 # Dictionary to hold facet options
 facet_options = {
   "PlacementStatus": ['Placed', 'NotPlaced'],
-  "ExtracurricularActivities": ["Yes", "No"],
-  "PlacementTraining": ["Yes", "No"]
+  "ExtracurricularActivities": ['Yes', 'No'],
+  "PlacementTraining": ['Yes', 'No']
 }
 
 @app.route('/')
@@ -47,12 +47,12 @@ def index():
     max_hsc = float(filter_ranges_results['max(HSC_Marks)'].iloc[0])
 
     # Create a dictionary where each key is a filter and values are the minimum and maximum values
-    filter_ranges = {'Internships': [min_internships, max_internships],
-                     'Projects': [min_projects, max_projects],
-                     'AptitudeTestScore': [min_aptitude, max_aptitude],
-                     'SoftSkillsRating': [min_softskillsrating, max_softskillsrating],
-                     'SSC_Marks': [min_ssc, max_ssc],
-                     'HSC_Marks': [min_hsc, max_hsc]}
+    filter_ranges = {'internships': [min_internships, max_internships],
+                     'projects': [min_projects, max_projects],
+                     'aptitudetestscore': [min_aptitude, max_aptitude],
+                     'softskillsrating': [min_softskillsrating, max_softskillsrating],
+                     'ssc_marks': [min_ssc, max_ssc],
+                     'hsc_marks': [min_hsc, max_hsc]}
 
     options = ['CGPA', 'Internships', 'Projects', 'Workshops/Certifications',
       'AptitudeTestScore', 'SoftSkillsRating', 'SSC_Marks', 'HSC_Marks']
@@ -70,6 +70,13 @@ def update():
     x = request_data.get('X')
     y = request_data.get('Y')
     facet = request_data.get('Facet')
+
+    # keep this in for now to avoid potential error 
+    if x == 'Workshops':
+        x = 'Workshops/Certifications'
+    if y == 'Workshops':
+        y = 'Workshops/Certifications'
+        
     
     # Update where clause from sliders
     # continuous_predicate = ' AND '.join([f'({column} >= 0 AND {column} <= 0)' for column in continuous_columns]) 
@@ -89,9 +96,12 @@ def update():
     facetFalse = facet_options[facet][1]
     
     predicate = ' AND '.join([continuous_predicate, discrete_predicate]) 
-    scatter1_query = f'SELECT {x}, {y}, FROM placementdata.csv WHERE {facet} = {facetTrue} AND {predicate} '
-    scatter2_query = f'SELECT {x}, {y}, FROM placementdata.csv WHERE NOT {facet} = {facetFalse} AND {predicate}'
-
+    scatter1_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetTrue}\' AND {predicate} '
+    scatter2_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE NOT {facet} = \'{facetFalse}\' AND {predicate}'
+    
+    # print(scatter1_query)
+    # print(scatter2_query)
+    
     scatter1_results = duckdb.sql(scatter1_query).df()
     scatter2_results = duckdb.sql(scatter2_query).df()
     # print(str(scatter_results.head()))

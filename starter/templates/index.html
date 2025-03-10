@@ -11,19 +11,19 @@
   <div id="interactions-container">
     <div id="dropdown-container">
         <label for="X"> X: </label>
-        <select name="X" id ="X" onchange="update_aggregate(this.value, 'grouper')">
+        <select name="X" id ="X" onchange="update_aggregate(this.value, 'X')">
             {% for option in x_options %}
                 <option value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
         <label for="Y"> Y: </label>
-        <select name="Y" id ="Y" onchange="update_aggregate(this.value, 'value')">
+        <select name="Y" id ="Y" onchange="update_aggregate(this.value, 'Y')">
             {% for option in y_options %}
                 <option value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
         <label for="Facet"> Facet: </label>
-        <select name="Facet" id ="Facet" onchange="update_aggregate(this.value, 'facet')">
+        <select name="Facet" id ="Facet" onchange="update_aggregate(this.value, 'Facet')">
             {% for option in facet_options %}
                 <option value="{{option}}">{{ option }}</option>
             {% endfor %}
@@ -43,13 +43,13 @@
         <h3>HSC_Marks</h3><div id="hsc_marks-slider" style="width:400pt; display: inline-block"></div>
         <div id="extracurricularactivities" style="margin-top:10px">
           <h3>ExtracurricularActivities</h3>
-            <input type="radio" class="extracurricular activities-selected" value="true" onchange="update_checked(this)" checked ><label>True</label>
-            <input type="radio" class="extracurricular activities-selected" value="false" onchange="update_checked(this)" checked ><label>False</label>
+            <input type="radio" class="extracurricular activities-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
+            <input type="radio" class="extracurricular activities-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
         </div>
         <div id="placementtraining" style="margin-top:10px">
           <h3>PlacementTraining</h3>
-            <input type="radio" class="placementtraining-selected" value="true" onchange="update_checked(this)" checked ><label>True</label>
-            <input type="radio" class="placementtraining-selected" value="false" onchange="update_checked(this)" checked ><label>False</label>
+            <input type="radio" class="placementtraining-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
+            <input type="radio" class="placementtraining-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
         </div>
       </div>
     </div>
@@ -63,20 +63,24 @@
   height = 360 - margin.top - margin.bottom;
 
   scatter1_svg = draw_svg('scatter1', margin, width, height)
-  scatter_scale = draw_axes('scatter1', scatter1_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
+  scatter1_scale = draw_axes('scatter1', scatter1_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
 
   scatter2_svg = draw_svg('scatter2', margin, width, height)
-  scatter_scale = draw_axes('scatter2', scatter2_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
+  scatter2_scale = draw_axes('scatter2', scatter2_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
 
   {% for column, (min,max) in filter_ranges.items() %}
-    draw_slider('{{column}}', {{min}}, {{max}}, scatter1_svg, scatter2_svg, scatter_scale)
+    draw_slider('{{column}}', {{min}}, {{max}}, scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
   {% endfor %}
 
-  update(scatter1_svg, scatter2_svg, scatter_scale)
+  update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
   
   function update_checked(checkbox){
     checkbox.classList.toggle('day-selected')
-    update(scatter1_svg, scatter2_svg, scatter_scale)
+    update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
+  }
+
+  function update_aggregate(value, id){
+    update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
   }
 
 </script>
