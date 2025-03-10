@@ -69,7 +69,7 @@ def update():
 
     x = request_data.get('X')
     y = request_data.get('Y')
-    facet = request_data.get('Facet')
+    facet = request_data.get('Facet') # TO DO: issue with whatever this is rn
 
     # keep this in for now to avoid potential error 
     if x == 'Workshops':
@@ -97,7 +97,7 @@ def update():
     
     predicate = ' AND '.join([continuous_predicate, discrete_predicate]) 
     scatter1_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetTrue}\' AND {predicate} '
-    scatter2_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE NOT {facet} = \'{facetFalse}\' AND {predicate}'
+    scatter2_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetFalse}\' AND {predicate}'
     
     # print(scatter1_query)
     # print(scatter2_query)

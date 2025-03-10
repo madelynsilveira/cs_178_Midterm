@@ -43,13 +43,13 @@
         <h3>HSC_Marks</h3><div id="hsc_marks-slider" style="width:400pt; display: inline-block"></div>
         <div id="extracurricularactivities" style="margin-top:10px">
           <h3>ExtracurricularActivities</h3>
-            <input type="radio" class="extracurricular activities-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
-            <input type="radio" class="extracurricular activities-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
+            <input type="radio" name="extracurricularactivities" class="extracurricular activities-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
+            <input type="radio" name="extracurricularactivities" class="extracurricular activities-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
         </div>
         <div id="placementtraining" style="margin-top:10px">
           <h3>PlacementTraining</h3>
-            <input type="radio" class="placementtraining-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
-            <input type="radio" class="placementtraining-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
+            <input type="radio" name="placementtraining" class="placementtraining-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
+            <input type="radio" name="placementtraining" class="placementtraining-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
         </div>
       </div>
     </div>
@@ -74,8 +74,8 @@
 
   update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
   
-  function update_checked(checkbox){
-    checkbox.classList.toggle('day-selected')
+  function update_checked(radio){
+   //radio.classList.toggle('day-selected')
     update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
   }
 

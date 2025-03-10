@@ -62,8 +62,23 @@ function draw_slider(column, min, max, scatter1_svg, scatter2_svg, scatter1_scal
 }
 
 // TODO: Write a function that draws the scatterplot
-function draw_scatter(data, svg, scale){
-    data = [{x: 5, y: 5}, {x: 10, y: 10}]
+function draw_scatter(data, svg, scale, name){
+    // Update scale for x and y axis
+    scale.x.domain(d3.extent(data, d => d.x));
+    scale.y.domain(d3.extent(data, d => d.y));
+
+    // Update axes and labels
+    svg.select("." + name + "-yaxis")
+      .transition().duration(500)
+      .call(d3.axisLeft(scale.y));
+    svg.select("." + name + "-xaxis")
+        .transition().duration(500)
+        .call(d3.axisBottom(scale.x));
+
+    // TODO: update x and y labels
+    // TODO: update title (based on facet)
+    
+    // Add data points
     console.log(data[0].x)
     console.log(scale)
     svg.selectAll(".scatter-point")
@@ -73,10 +88,10 @@ function draw_scatter(data, svg, scale){
         .attr("class", "scatter-point")
         .attr("cx", d => scale.x(d.x)) 
         .attr("cy", d => scale.y(d.y)) 
-        .attr("r", 5) 
-        .attr("fill", "red") 
+        .attr("r", 3) 
+        .attr("fill", "blue") 
         .attr("stroke", "black") 
-        .attr("stroke-width", 1);  
+        .attr("stroke-width", 0.5);  
 }
 
 // TODO: Write a function that extracts the selected days and minimum/maximum values for each slider
@@ -107,8 +122,8 @@ function update_scatter(data1, data2, svg1, svg2, scatter1_scale, scatter2_scale
     svg1.selectAll(".scatter-point").remove();
     svg2.selectAll(".scatter-point").remove();
 
-    draw_scatter(data1, svg1, scatter1_scale);
-    draw_scatter(data2, svg2, scatter2_scale);
+    draw_scatter(data1, svg1, scatter1_scale, 'scatter1');
+    draw_scatter(data2, svg2, scatter2_scale, 'scatter2');
 }
 
 function update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale){
