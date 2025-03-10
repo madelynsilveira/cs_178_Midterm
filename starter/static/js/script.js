@@ -92,7 +92,7 @@ function draw_bar(data, svg, scale){
 
 // TODO: Write a function that extracts the selected days and minimum/maximum values for each slider
 function get_params(){
-    var activities = document.getElementById('extracurricularactivites').value;
+    var activities = document.getElementById('extracurricularactivities').value;
     var training = document.getElementById('placementtraining').value;
 
     var x = document.getElementById('X').value;
