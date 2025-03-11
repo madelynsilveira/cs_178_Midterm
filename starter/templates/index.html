@@ -6,6 +6,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="static/js/nouislider.min.js"></script>
     <script src="static/js/script.js"></script>
+  
 </header>
 <body>
   <div id="interactions-container">
@@ -32,25 +33,26 @@
 </div>
   <div class = "container">
     <div style="float: left; display: flex; justify-content: space-between; width: 100%;">
-      <div><h1>Scatter 1</h1><div id="scatter1"></div></div>
-      <div><h1>Scatter 2</h1><div id="scatter2"></div></div>
-      <div>
-      <h3>Internships</h3><div id="internships-slider" style="width:400pt; display: inline-block"></div>
-        <h3>Projects</h3><div id="projects-slider" style="width:400pt; display: inline-block"></div>
-        <h3>AptitudeTestScore</h3><div id="aptitudetestscore-slider" style="width:400pt; display: inline-block"></div>
-        <h3>SoftSkillsRating</h3><div id="softskillsrating-slider" style="width:400pt; display: inline-block"></div>
-        <h3>SSC_Marks</h3><div id="ssc_marks-slider" style="width:400pt; display: inline-block"></div>
-        <h3>HSC_Marks</h3><div id="hsc_marks-slider" style="width:400pt; display: inline-block"></div>
+      <div><h1>Scatter 1</h1><div id="scatter1" style="padding-left: 30px; padding-right: 30px"></div></div>
+      <div><h1>Scatter 2</h1><div id="scatter2" style="padding-left: 30px; padding-right: 30px"></div></div>
+      <div style="padding-left: 30px; padding-right: 30px"> 
+        <h3>Internships</h3><div id="internships-slider" style="width:200pt; display: inline-block"></div>
+        <h3>Projects</h3><div id="projects-slider" style="width:200pt; display: inline-block"></div>
+        <h3>Aptitude Test Score</h3><div id="aptitudetestscore-slider" style="width:200pt; display: inline-block"></div>
+        <h3>Soft Skills Rating</h3><div id="softskillsrating-slider" style="width:200pt; display: inline-block"></div>
+        <h3>SSC Marks</h3><div id="ssc_marks-slider" style="width:200pt; display: inline-block"></div>
+        <h3>HSC Marks</h3><div id="hsc_marks-slider" style="width:200pt; display: inline-block"></div>
         <div id="extracurricularactivities" style="margin-top:10px">
-          <h3>ExtracurricularActivities</h3>
+          <h3>Extracurricular Activities</h3>
             <input type="radio" name="extracurricularactivities" class="extracurricular activities-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
             <input type="radio" name="extracurricularactivities" class="extracurricular activities-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
         </div>
         <div id="placementtraining" style="margin-top:10px">
-          <h3>PlacementTraining</h3>
+          <h3>Placement Training</h3>
             <input type="radio" name="placementtraining" class="placementtraining-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
             <input type="radio" name="placementtraining" class="placementtraining-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
         </div>
+      </div>
       </div>
     </div>
     </div>

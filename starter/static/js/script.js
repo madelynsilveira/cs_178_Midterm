@@ -3,7 +3,7 @@ function draw_svg(container_id, margin, width, height){
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .style("background-color", "#dbdad7")
+    .style("background-color", "#F5F5F5")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     return svg
@@ -89,7 +89,7 @@ function draw_scatter(data, svg, scale, name){
         .attr("cx", d => scale.x(d.x)) 
         .attr("cy", d => scale.y(d.y)) 
         .attr("r", 3) 
-        .attr("fill", "blue") 
+        .attr("fill", "#87CEEB") 
         .attr("stroke", "black") 
         .attr("stroke-width", 0.5);  
 }
