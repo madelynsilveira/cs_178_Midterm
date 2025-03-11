@@ -96,8 +96,10 @@ function draw_scatter(data, svg, scale, name){
 
 // TODO: Write a function that extracts the selected days and minimum/maximum values for each slider
 function get_params(){
-    var activities = document.querySelector('input[class="extracurricular activities-selected"]:checked').value;
-    var training =  document.querySelector('input[class="placementtraining-selected"]:checked').value;
+    var checkboxes = document.querySelectorAll('input[class="extracurricular activities-selected"]:checked')
+    var activities = Array.from(checkboxes).map(checkbox => checkbox.value);
+    var checkboxes = document.querySelectorAll('input[class="placementtraining-selected"]:checked')
+    var training =  Array.from(checkboxes).map(checkbox => checkbox.value);
 
     var x = document.getElementById('X').value;
     var y = document.getElementById('Y').value;

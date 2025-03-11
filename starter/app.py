@@ -69,7 +69,8 @@ def update():
 
     x = request_data.get('X')
     y = request_data.get('Y')
-    facet = request_data.get('Facet') # TO DO: issue with whatever this is rn
+    facet = request_data.get('Facet')
+    print(facet) # TO DO: issue with whatever this is rn
 
     # keep this in for now to avoid potential error 
     if x == 'Workshops':
@@ -85,26 +86,26 @@ def update():
         for column in continuous_columns]) 
 
     # Update where clause from radio buttons
-    activities = request_data.get('ExtracurricularActivities')
-    training = request_data.get('PlacementTraining')
-    discrete_predicate = f'ExtracurricularActivities = {activities} AND PlacementTraining = {training}'
+    activities_list = request_data.get('ExtracurricularActivities')
+    training_list = request_data.get('PlacementTraining')
+    activities_sql_list = ", ".join([f"{item}" for item in activities_list])
+    training_sql_list = ", ".join([f"{item}" for item in training_list])
+    
+    discrete_predicate = f'ExtracurricularActivities IN ({activities_sql_list}) AND PlacementTraining IN ({training_sql_list})'
+    print(discrete_predicate)
 
 
     # Combine where clause from sliders and checkboxes
-    facet = selected['Facet']
     facetTrue = facet_options[facet][0]
     facetFalse = facet_options[facet][1]
     
     predicate = ' AND '.join([continuous_predicate, discrete_predicate]) 
+    
     scatter1_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetTrue}\' AND {predicate} '
     scatter2_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetFalse}\' AND {predicate}'
     
-    # print(scatter1_query)
-    # print(scatter2_query)
-    
     scatter1_results = duckdb.sql(scatter1_query).df()
     scatter2_results = duckdb.sql(scatter2_query).df()
-    # print(str(scatter_results.head()))
     
     # TODO: Extract data to populate scatter
     scatter1_data = scatter1_results.to_dict(orient="records")

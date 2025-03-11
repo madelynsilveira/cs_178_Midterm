@@ -44,13 +44,13 @@
         <h3>HSC Marks</h3><div id="hsc_marks-slider" style="width:200pt; display: inline-block"></div>
         <div id="extracurricularactivities" style="margin-top:10px">
           <h3>Extracurricular Activities</h3>
-            <input type="radio" name="extracurricularactivities" class="extracurricular activities-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
-            <input type="radio" name="extracurricularactivities" class="extracurricular activities-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
+            <input type="checkbox" name="extracurricularactivities" class="extracurricular activities-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
+            <input type="checkbox" name="extracurricularactivities" class="extracurricular activities-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
         </div>
         <div id="placementtraining" style="margin-top:10px">
           <h3>Placement Training</h3>
-            <input type="radio" name="placementtraining" class="placementtraining-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
-            <input type="radio" name="placementtraining" class="placementtraining-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
+            <input type="checkbox" name="placementtraining" class="placementtraining-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
+            <input type="checkbox" name="placementtraining" class="placementtraining-selected" value="'No'" onchange="update_checked(this)" checked ><label>False</label>
         </div>
       </div>
       </div>
@@ -82,6 +82,18 @@
   }
 
   function update_aggregate(value, id){
+    if (value == "ExtracurricularActivities") {
+      // check both radio for this one
+      document.querySelectorAll('.extracurricular.activities-selected').forEach(checkbox => {
+        checkbox.checked = true;  
+    });
+    }
+    if (value == "PlacementTraining") {
+      // check both radio for this one
+      document.querySelectorAll('.placementtraining-selected').forEach(checkbox => {
+        checkbox.checked = true;  
+    });
+    }
     update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
   }
 
