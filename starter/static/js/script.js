@@ -5,7 +5,7 @@ function draw_svg(container_id, margin, width, height){
     .attr("height", height + margin.top + margin.bottom)
     .style("background-color", "#F5F5F5")
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + 1.5*margin.left + "," + margin.bottom + ")");
     return svg
 }
 
@@ -14,12 +14,29 @@ function draw_xaxis(plot_name, svg, height, scale){
         .attr('class', plot_name + "-xaxis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(scale).tickSize(0))
+
+    // Add the x-axis label (initially)
+    svg.append("text")
+        .attr("class", "x-label")
+        .attr("text-anchor", "middle")
+        .attr("x", width / 2)
+        .attr("y", height + 36)
+        .text("CGPA");
 }
 
 function draw_yaxis(plot_name, svg, scale){
     svg.append("g")
         .attr('class', plot_name + "-yaxis")
         .call(d3.axisLeft(scale));
+
+    // Add the y-axis label (initially)
+    svg.append("text")
+    .attr("class", "y-label") // add class name "y-label" so we can update it
+    .attr("text-anchor", "middle")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -margin.left) // add some padding between y-axis label and y-axis
+    .attr("x", -height / 2 + 10) // Adjust the x position to center the label vertically
+    .text("CGPA");
 }
 
 function draw_axis(plot_name, axis, svg, height, domain, range, discrete){
@@ -62,7 +79,7 @@ function draw_slider(column, min, max, scatter1_svg, scatter2_svg, scatter1_scal
 }
 
 // TODO: Write a function that draws the scatterplot
-function draw_scatter(data, svg, scale, name){
+function draw_scatter(data, svg, scale, name, x_label, y_label, title){
     // Update scale for x and y axis
     scale.x.domain(d3.extent(data, d => d.x));
     scale.y.domain(d3.extent(data, d => d.y));
@@ -75,8 +92,16 @@ function draw_scatter(data, svg, scale, name){
         .transition().duration(500)
         .call(d3.axisBottom(scale.x));
 
-    // TODO: update x and y labels
-    // TODO: update title (based on facet)
+    // Update x and y labels
+    svg.select(".y-label")
+      .transition().duration(500)
+      .text(y_label)
+    svg.select(".x-label")
+      .transition().duration(500)
+      .text(x_label)
+
+    // Update title (based on facet)
+    document.getElementById(name + "-header").innerText = title;
     
     // Add data points
     console.log(data[0].x)
@@ -92,6 +117,10 @@ function draw_scatter(data, svg, scale, name){
         .attr("fill", "#87CEEB") 
         .attr("stroke", "black") 
         .attr("stroke-width", 0.5);  
+    
+    // Update student totals
+    totalPoints = data.length
+    document.getElementById(name + "-total").innerText = `Total Students: ${totalPoints}`;
 }
 
 // TODO: Write a function that extracts the selected days and minimum/maximum values for each slider
@@ -119,13 +148,14 @@ function get_params(){
 }
 
 // TODO: Write a function that removes the old data points and redraws the scatterplot
-function update_scatter(data1, data2, svg1, svg2, scatter1_scale, scatter2_scale){
+function update_scatter(data1, data2, svg1, svg2, scatter1_scale, scatter2_scale, 
+  x, y, label1, label2){
     // Remove existing points before drawing new ones
     svg1.selectAll(".scatter-point").remove();
     svg2.selectAll(".scatter-point").remove();
 
-    draw_scatter(data1, svg1, scatter1_scale, 'scatter1');
-    draw_scatter(data2, svg2, scatter2_scale, 'scatter2');
+    draw_scatter(data1, svg1, scatter1_scale, 'scatter1', x, y, label1);
+    draw_scatter(data2, svg2, scatter2_scale, 'scatter2', x, y, label2);
 }
 
 function update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale){
@@ -140,29 +170,14 @@ function update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale){
         })
     }).then(async function(response){
         var results = JSON.parse(JSON.stringify((await response.json())))
-        update_scatter(results['scatter1_data'], results['scatter2_data'], scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
+        // Grab labels from the results 
+        x = results['x_label']
+        y = results['y_label']
+        label1 = results['scatter1_label']
+        label2 = results['scatter2_label']
+
+        update_scatter(results['scatter1_data'], results['scatter2_data'], 
+          scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale, 
+          x, y, label1, label2)
     })
-}
-
-function update_aggregate(value, key){  
-    params = get_params()  
-//   fetch('/update_aggregate', {
-//       method: 'POST',
-//       credentials: 'include',
-//       body: JSON.stringify({value: value, key: key}),
-//       cache: 'no-cache',
-//       headers: new Headers({
-//           'content-type': 'application/json'
-//       })
-//   }).then(async function(response){
-//       var results = JSON.parse(JSON.stringify((await response.json())))
-    
-//       // Extract data
-//       data = JSON.parse(results.data)
-//       let x = results.x_column
-//       let y = results.y_column
-
-//       // Redraw bar graph 
-//       draw_bar(data, x, y)
-//   })
 }

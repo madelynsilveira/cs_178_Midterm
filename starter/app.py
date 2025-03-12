@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import duckdb
+import re
 
 app = Flask(__name__)
 continuous_columns = ['Internships', 'Projects', 'AptitudeTestScore', 'SoftSkillsRating', 'SSC_Marks', 'HSC_Marks']
@@ -70,7 +71,6 @@ def update():
     x = request_data.get('X')
     y = request_data.get('Y')
     facet = request_data.get('Facet')
-    print(facet) # TO DO: issue with whatever this is rn
 
     # keep this in for now to avoid potential error 
     if x == 'Workshops':
@@ -78,7 +78,6 @@ def update():
     if y == 'Workshops':
         y = 'Workshops/Certifications'
         
-    
     # Update where clause from sliders
     # continuous_predicate = ' AND '.join([f'({column} >= 0 AND {column} <= 0)' for column in continuous_columns]) 
     continuous_predicate = ' AND '.join([
@@ -107,30 +106,20 @@ def update():
     scatter1_results = duckdb.sql(scatter1_query).df()
     scatter2_results = duckdb.sql(scatter2_query).df()
     
-    # TODO: Extract data to populate scatter
+    # Extract data to populate scatter
     scatter1_data = scatter1_results.to_dict(orient="records")
     scatter2_data = scatter2_results.to_dict(orient="records")
 
-    return {'scatter1_data': scatter1_data, 'scatter2_data': scatter2_data}
+    # Format labels
+    facet = re.sub(r'([a-z])([A-Z])', r'\1 \2', facet)
+    facetTrue = re.sub(r'([a-z])([A-Z])', r'\1 \2', facetTrue)
+    facetFalse = re.sub(r'([a-z])([A-Z])', r'\1 \2', facetFalse)
+    x = re.sub(r'([a-z])([A-Z])', r'\1 \2', x).replace('_', ' ')
+    y = re.sub(r'([a-z])([A-Z])', r'\1 \2', y).replace('_', ' ')
 
-# # Update aggregated data
-# @app.route("/update_aggregate", methods=['POST'])
-# def update_aggregate():
-#     data = request.get_json()
-#     val = data.get('value')
-#     key = data.get('key')
-
-#     # Update value
-#     selected[key] = val
-#     x = selected['X']
-#     y = selected['Y']
-#     facet = selected['Facet']
-
-#     # Update data
-#     new_data = update() #get_aggregated_data(group, value, agg)
-
-#     return jsonify({'data': new_data.to_json(), 'x_column': group, 'y_column': value})
-
+    return {'scatter1_data': scatter1_data, 'scatter2_data': scatter2_data,
+      'scatter1_label': facet + ": " + facetTrue, 'scatter2_label': facet + ": " + facetFalse,
+       'x_label': x, 'y_label': y}
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
