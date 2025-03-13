@@ -9,7 +9,7 @@
   
 </header>
 <body>
-  <div id="interactions-container">
+  <div id="interactions-container">  <div class="dropdown-container-wrapper">
     <div id="dropdown-container">
         <label for="X"> X: </label>
         <select name="X" id ="X" onchange="update_aggregate(this.value, 'X')">
@@ -29,6 +29,8 @@
                 <option value="{{option}}">{{ option }}</option>
             {% endfor %}
         </select>
+      </div>
+    </div>
     </div>
 </div>
   <div class = "container">
@@ -36,10 +38,14 @@
       <div>
         <h1 id="scatter1-header">Extracurricular Activities: Yes</h1><div id="scatter1" style="padding-left: 30px; padding-right: 30px"></div>
         <h3 id="scatter1-total">Total Students: </h3>
+        <h3 id="scatter1-x-avg">Average CGPA: </h3>
+        <h3 id="scatter1-y-avg">Average CGPA: </h3>
       </div>
       <div>
         <h1 id="scatter2-header">Extracurricular Activities: No</h1><div id="scatter2" style="padding-left: 30px; padding-right: 30px"></div>
         <h3 id="scatter2-total">Total Students: </h3>
+        <h3 id="scatter2-x-avg">Average CGPA: </h3>
+        <h3 id="scatter2-y-avg">Average CGPA: </h3>
       </div>
       <div style="padding-left: 30px; padding-right: 30px"> 
         <h3>Internships</h3><div id="internships-slider" style="width:200pt; display: inline-block"></div>
@@ -66,7 +72,7 @@
 </body>
 
 <script>
-  margin = {top: 45, right: 45, bottom: 40, left: 40},
+  margin = {top: 45, right: 45, bottom: 45, left: 45},
   width = 460 - margin.left - margin.right,
   height = 360 - margin.top - margin.bottom;
 

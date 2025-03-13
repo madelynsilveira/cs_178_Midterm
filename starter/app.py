@@ -91,8 +91,6 @@ def update():
     training_sql_list = ", ".join([f"{item}" for item in training_list])
     
     discrete_predicate = f'ExtracurricularActivities IN ({activities_sql_list}) AND PlacementTraining IN ({training_sql_list})'
-    print(discrete_predicate)
-
 
     # Combine where clause from sliders and checkboxes
     facetTrue = facet_options[facet][0]
@@ -117,9 +115,21 @@ def update():
     x = re.sub(r'([a-z])([A-Z])', r'\1 \2', x).replace('_', ' ')
     y = re.sub(r'([a-z])([A-Z])', r'\1 \2', y).replace('_', ' ')
 
+    # Compute stats for each graph
+    stats1 = {
+      'total': len(scatter1_results),
+      'x_avg': scatter1_results['x'].mean(),
+      'y_avg': scatter1_results['y'].mean()
+    }
+    stats2 = {
+      'total': len(scatter2_results),
+      'x_avg': scatter2_results['x'].mean(),
+      'y_avg': scatter2_results['y'].mean()
+    }
+
     return {'scatter1_data': scatter1_data, 'scatter2_data': scatter2_data,
       'scatter1_label': facet + ": " + facetTrue, 'scatter2_label': facet + ": " + facetFalse,
-       'x_label': x, 'y_label': y}
+       'x_label': x, 'y_label': y, 'scatter1_stats': stats1, 'scatter2_stats': stats2}
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)

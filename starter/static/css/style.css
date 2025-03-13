@@ -1,44 +1,162 @@
+/* General Body Styling */
 body {
-	font-family: sans-serif;
-	font-size: 10pt;
+  font-family: 'Roboto', sans-serif;  /* Modern and clean sans-serif font */
+  font-size: 14px;                    /* Larger base font size for readability */
+  line-height: 1.6;                   /* Increased line height for better readability */
+  color: #333;                        /* Darker text for better contrast */
+  margin: 0;
+  padding: 0;
 }
 
+/* Styling for Text Elements */
 text {
-	font-family: sans-serif;
-	font-size: 10pt;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
 }
+
+/* Input fields */
 input {
-	vertical-align: middle;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 8px;   /* Rounded corners for a modern look */
+  border: 1px solid #ccc; /* Light border */
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  transition: border 0.3s ease;  /* Smooth transition on focus */
 }
-.noUi-tooltip {
-	display: none;
+
+input:focus {
+  border: 1px solid #007BFF; /* Blue border on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Light blue shadow */
 }
-.noUi-active .noUi-tooltip {
-	display: block;
+
+/* Make sure body and html take up full height */
+html, body {
+  height: 100%;
+  margin: 0; /* Remove default margin */
 }
-.container
-{
-	text-align:center;
-	padding-left: 20px;
+
+/* Container Styling */
+.container {
+  display: flex;  /* Use Flexbox layout */
+  justify-content: center; /* Center items horizontally */
+  align-items: flex-start; /* Align items at the top of the container */
+  flex-wrap: wrap; /* Allow wrapping to the next row if necessary */
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto; /* Horizontally center the container */
+  text-align: center; /* Center text inside the container */
 }
-.sliderHumidity
-{
-  text-align:center;
+
+/* Slider Styling */
+.sliderHumidity {
+  text-align: center;
 }
+
+/* Tooltip Styling */
 .tooltip {
   position: absolute;
-  font-size: 12px;
-  width:  auto;
-  height: auto;
+  font-size: 14px;                  /* Larger, more readable font size */
+  background-color: rgba(0, 0, 0, 0.7); /* Darker background with some transparency */
+  color: #fff;                      /* White text for better contrast */
+  padding: 8px 12px;
+  border-radius: 6px;               /* Rounded corners */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Soft shadow effect */
   pointer-events: none;
-  background-color: white;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out; /* Smooth fade-in transition */
 }
+
+.noUi-tooltip {
+  display: none;
+}
+
+.noUi-active .noUi-tooltip {
+  display: block;
+  opacity: 1;
+}
+
+/* Axis Labels */
 .axis {
-  font: 10px sans-serif;
+  font: 12px 'Roboto', sans-serif; /* More modern font and larger size */
+  fill: #333;                      /* Darker color for better readability */
 }
+
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: #ccc; /* Lighter stroke for a more subtle axis line */
   shape-rendering: crispEdges;
+}
+
+/* General Buttons and Links */
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  background-color: #007BFF;    /* Modern blue background */
+  color: #fff;                  /* White text */
+  border-radius: 8px;           /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;    /* Darker blue on hover */
+}
+
+/* Add a subtle hover effect on links */
+a {
+  color: #007BFF;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #0056b3; /* Darker blue for hover state */
+}
+
+/* Improve Input and Select Elements */
+select {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border 0.3s ease;
+}
+
+select:focus {
+  border: 1px solid #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Wrapper for centering dropdown container */
+.dropdown-container-wrapper {
+  display: flex;
+  justify-content: center;  /* Centers the dropdown container horizontally */
+  margin-top: 35px;
+  margin-bottom: 10px;  /* Adds some space between the dropdowns and the scatter graphs */
+}
+
+/* Dropdown container styling */
+#dropdown-container {
+  display: flex;
+  justify-content: space-evenly; /* Distribute the dropdowns evenly */
+  align-items: center;  /* Vertically align items in the center */
+  width: 60%;  /* Set a width for the dropdown container */
+}
+
+#dropdown-container select,
+#dropdown-container label {
+  margin: 0 10px;  /* Add spacing between dropdowns and labels */
+}
+
+/* Optional: Style for dropdowns */
+#dropdown-container select {
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }

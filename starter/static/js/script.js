@@ -3,7 +3,7 @@ function draw_svg(container_id, margin, width, height){
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .style("background-color", "#F5F5F5")
+    .style("background-color", "#f5f5f5")
     .append("g")
     .attr("transform", "translate(" + 1.5*margin.left + "," + margin.bottom + ")");
     return svg
@@ -79,7 +79,7 @@ function draw_slider(column, min, max, scatter1_svg, scatter2_svg, scatter1_scal
 }
 
 // TODO: Write a function that draws the scatterplot
-function draw_scatter(data, svg, scale, name, x_label, y_label, title){
+function draw_scatter(data, svg, scale, name, x_label, y_label, title, stats){
     // Update scale for x and y axis
     scale.x.domain(d3.extent(data, d => d.x));
     scale.y.domain(d3.extent(data, d => d.y));
@@ -119,8 +119,18 @@ function draw_scatter(data, svg, scale, name, x_label, y_label, title){
         .attr("stroke-width", 0.5);  
     
     // Update student totals
-    totalPoints = data.length
-    document.getElementById(name + "-total").innerText = `Total Students: ${totalPoints}`;
+    document.getElementById(name + "-total").innerText = `Total Students: ${stats['total']}`;
+
+    // Update student averages
+    x_avg = stats['x_avg'].toFixed(2); 
+    y_avg = stats['y_avg'].toFixed(2);
+    document.getElementById(name + "-x-avg").innerText = `Average ${x_label}: ${x_avg}`;
+
+    // Only add y average if it is different from the x average 
+    document.getElementById(name + "-y-avg").innerText = `Average ${y_label}: ${y_avg}`;
+    if (x_label == y_label) {
+      document.getElementById(name + "-y-avg").innerText = ``;
+    };
 }
 
 // TODO: Write a function that extracts the selected days and minimum/maximum values for each slider
@@ -149,13 +159,13 @@ function get_params(){
 
 // TODO: Write a function that removes the old data points and redraws the scatterplot
 function update_scatter(data1, data2, svg1, svg2, scatter1_scale, scatter2_scale, 
-  x, y, label1, label2){
+  x, y, label1, label2, stats1, stats2){
     // Remove existing points before drawing new ones
     svg1.selectAll(".scatter-point").remove();
     svg2.selectAll(".scatter-point").remove();
 
-    draw_scatter(data1, svg1, scatter1_scale, 'scatter1', x, y, label1);
-    draw_scatter(data2, svg2, scatter2_scale, 'scatter2', x, y, label2);
+    draw_scatter(data1, svg1, scatter1_scale, 'scatter1', x, y, label1, stats1);
+    draw_scatter(data2, svg2, scatter2_scale, 'scatter2', x, y, label2, stats2);
 }
 
 function update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale){
@@ -175,9 +185,11 @@ function update(scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale){
         y = results['y_label']
         label1 = results['scatter1_label']
         label2 = results['scatter2_label']
+        stats1 = results['scatter1_stats']
+        stats2 = results['scatter2_stats']
 
         update_scatter(results['scatter1_data'], results['scatter2_data'], 
           scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale, 
-          x, y, label1, label2)
+          x, y, label1, label2, stats1, stats2)
     })
 }
