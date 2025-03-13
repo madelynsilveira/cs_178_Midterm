@@ -101,6 +101,7 @@ def update():
     scatter1_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetTrue}\' AND {predicate} '
     scatter2_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetFalse}\' AND {predicate}'
     
+    print(scatter1_query)
     scatter1_results = duckdb.sql(scatter1_query).df()
     scatter2_results = duckdb.sql(scatter2_query).df()
     
