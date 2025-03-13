@@ -78,6 +78,31 @@ function draw_slider(column, min, max, scatter1_svg, scatter2_svg, scatter1_scal
     });
 }
 
+function draw_reg_line(svg, slope, intercept, data, scale){
+    // Remove previous regression line 
+    svg.selectAll(".line").remove();
+
+    // Generate the points for the regression line using the custom equation y = mx + b
+    const lineData = [
+    { x: d3.min(data, d=> d.x), y: slope * d3.min(data, d => d.x) + intercept }, 
+    { x: d3.max(data, d => d.x), y: slope * d3.max(data, d => d.x) + intercept } // Point at max x
+    ];
+
+    // Create the regression line
+    svg.append("path")
+        .data([lineData])
+        .attr("class", "line")
+        .attr("fill", "none")
+        .attr("stroke", "deeppink")
+        .attr("opacity", .60)
+        .attr("stroke-width", 2)
+        .attr("d", d3.line()
+            .x(d => scale.x(d.x))
+            .y(d => scale.y(d.y))
+        );
+    console.log("in svg")
+}
+
 // TODO: Write a function that draws the scatterplot
 function draw_scatter(data, svg, scale, name, x_label, y_label, title, stats){
     // Update scale for x and y axis
@@ -103,6 +128,9 @@ function draw_scatter(data, svg, scale, name, x_label, y_label, title, stats){
     // Update title (based on facet)
     document.getElementById(name + "-header").innerText = title;
     
+    // Draw regression line for each graph
+    draw_reg_line(svg, stats['slope'], stats['intercept'], data, scale);
+   
     // Add data points
     console.log(data[0].x)
     console.log(scale)
@@ -116,8 +144,8 @@ function draw_scatter(data, svg, scale, name, x_label, y_label, title, stats){
         .attr("r", 3) 
         .attr("fill", "#87CEEB") 
         .attr("stroke", "black") 
-        .attr("stroke-width", 0.5);  
-    
+        .attr("stroke-width", 0.5); 
+         
     // Update student totals
     document.getElementById(name + "-total").innerText = `Total Students: ${stats['total']}`;
 

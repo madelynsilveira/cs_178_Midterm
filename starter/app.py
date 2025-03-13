@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 import duckdb
 import re
+import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 continuous_columns = ['Internships', 'Projects', 'AptitudeTestScore', 'SoftSkillsRating', 'SSC_Marks', 'HSC_Marks']
@@ -101,7 +103,6 @@ def update():
     scatter1_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetTrue}\' AND {predicate} '
     scatter2_query = f'SELECT "{x}" AS "x", "{y}" AS "y" FROM placementdata.csv WHERE {facet} = \'{facetFalse}\' AND {predicate}'
     
-    print(scatter1_query)
     scatter1_results = duckdb.sql(scatter1_query).df()
     scatter2_results = duckdb.sql(scatter2_query).df()
     
@@ -117,20 +118,33 @@ def update():
     y = re.sub(r'([a-z])([A-Z])', r'\1 \2', y).replace('_', ' ')
 
     # Compute stats for each graph
+    slope1, intercept1 = get_line_metrics(scatter1_results)
+    slope2, intercept2 = get_line_metrics(scatter2_results)
     stats1 = {
       'total': len(scatter1_results),
       'x_avg': scatter1_results['x'].mean(),
-      'y_avg': scatter1_results['y'].mean()
+      'y_avg': scatter1_results['y'].mean(),
+      'slope': slope1,
+      'intercept': intercept1
     }
     stats2 = {
       'total': len(scatter2_results),
       'x_avg': scatter2_results['x'].mean(),
-      'y_avg': scatter2_results['y'].mean()
+      'y_avg': scatter2_results['y'].mean(),
+      'slope': slope2,
+      'intercept': intercept2
     }
 
     return {'scatter1_data': scatter1_data, 'scatter2_data': scatter2_data,
       'scatter1_label': facet + ": " + facetTrue, 'scatter2_label': facet + ": " + facetFalse,
        'x_label': x, 'y_label': y, 'scatter1_stats': stats1, 'scatter2_stats': stats2}
+
+
+# functions to get regression line metrics
+def get_line_metrics(scatter_data):
+  coefficients = np.polyfit(scatter_data['x'], scatter_data['y'], 1)
+  return coefficients[0], coefficients[1]
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=3000)

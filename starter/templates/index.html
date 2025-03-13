@@ -48,12 +48,12 @@
         <h3 id="scatter2-y-avg">Average CGPA: </h3>
       </div>
       <div style="padding-left: 30px; padding-right: 30px"> 
-        <h3>Internships</h3><div id="internships-slider" style="width:200pt; display: inline-block"></div>
-        <h3>Projects</h3><div id="projects-slider" style="width:200pt; display: inline-block"></div>
-        <h3>Aptitude Test Score</h3><div id="aptitudetestscore-slider" style="width:200pt; display: inline-block"></div>
-        <h3>Soft Skills Rating</h3><div id="softskillsrating-slider" style="width:200pt; display: inline-block"></div>
-        <h3>SSC Marks</h3><div id="ssc_marks-slider" style="width:200pt; display: inline-block"></div>
-        <h3>HSC Marks</h3><div id="hsc_marks-slider" style="width:200pt; display: inline-block"></div>
+        <h3>Internships</h3><div id="internships-slider" class="slider" style="width:200pt; display: inline-block"></div>
+        <h3>Projects</h3><div id="projects-slider" class="slider" style="width:200pt; display: inline-block"></div>
+        <h3>Aptitude Test Score</h3><div id="aptitudetestscore-slider" class="slider" style="width:200pt; display: inline-block"></div>
+        <h3>Soft Skills Rating</h3><div id="softskillsrating-slider" class="slider" style="width:200pt; display: inline-block"></div>
+        <h3>SSC Marks</h3><div id="ssc_marks-slider" class="slider" style="width:200pt; display: inline-block"></div>
+        <h3>HSC Marks</h3><div id="hsc_marks-slider" class="slider" style="width:200pt; display: inline-block"></div>
         <div id="extracurricularactivities" style="margin-top:10px">
           <h3>Extracurricular Activities</h3>
             <input type="checkbox" name="extracurricularactivities" class="extracurricular activities-selected" value="'Yes'" onchange="update_checked(this)" checked ><label>True</label>
@@ -81,6 +81,7 @@
 
   scatter2_svg = draw_svg('scatter2', margin, width, height)
   scatter2_scale = draw_axes('scatter2', scatter2_svg, width, height, {{scatter_ranges[:2]}}, {{scatter_ranges[2:]}}, false)
+
 
   {% for column, (min,max) in filter_ranges.items() %}
     draw_slider('{{column}}', {{min}}, {{max}}, scatter1_svg, scatter2_svg, scatter1_scale, scatter2_scale)
